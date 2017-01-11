@@ -1,3 +1,6 @@
+/* @author Keller Flint */
+
+
 #include <stdio.h>
 #include "000pixel.h"
 #include <math.h>
