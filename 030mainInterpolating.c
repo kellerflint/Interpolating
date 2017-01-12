@@ -9,9 +9,12 @@ int main() {
     if (pixInitialize(512, 512, "Pixel Graphics") != 0)
 		return 1;
 	else {
-        double a[2] = {0, 0};
-        double b[2] = {6, 0};
-        double c[2] = {3, 6};
+
+        double m = 10;
+
+        double a[2] = {0 * m, 0 * m};
+        double b[2] = {6 * m, 0 * m};
+        double c[2] = {3 * m, 6 * m};
 
         double rgb[3] = {1, 0, 0};
 
