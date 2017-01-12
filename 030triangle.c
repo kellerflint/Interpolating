@@ -6,6 +6,10 @@
 #include <math.h>
 
 
+//Global variables for now because interpolation MESSED UP MY COOL SOLUTION
+double globalA0, globalA1, globalB0, globalB1, globalC0, globalC1;
+
+
 /* Returns the highest value of three doubles */
 double findHigh(double x, double y, double z) {
     double high = x;
@@ -96,6 +100,14 @@ void render(double a0, double a1, double b0, double b1, double c0, double c1, do
 }
 
 void triRender(double a[2], double b[2], double c[2], double rgb[3]) {
+
+    // Assign global variables for a, b and c
+    globalA0 = a[0];
+    globalA1 = a[1];
+    globalB0 = b[0];
+    globalB1 = b[1];
+    globalC0 = c[0];
+    globalC1 = c[1];
 
     double aa[2] = {a[0], a[1]};
     double bb[2] = {b[0], b[1]};
