@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "000pixel.h"
 #include "030triangle.c"
+#include "030matrix.c"
 
 int main() {
     // Initializes Pixel Graphics
