@@ -80,14 +80,12 @@ void render(double a0, double a1, double b0, double b1, double c0, double c1, do
             printf("y: %d\n", y);
             x1 = x1 - (1/findSlope(a, c));
             x2 = x2 - (1/findSlope(b, c));
-            printf("\tx1: %f, x2: %f\n", x1, x2);
             for (int x = x1; x < x2; x++) {
                 double m[2][2] = {
                     {globalB0 - globalA0, globalC0 - globalA0},
                     {globalB1 - globalA1, globalC1 - globalA1}};
                 double mInv[2][2];
                 double xa[2] = {x - globalA0, y - globalA1};
-                printf("%f, %f\n", xa[0], xa[1]);
                 double pq[2];
                 if (mat22Invert(m, mInv) != 0) {
                     mat221Multiply(mInv, xa, pq);
@@ -99,10 +97,6 @@ void render(double a0, double a1, double b0, double b1, double c0, double c1, do
                 color[0] = alpha[0] + (pq[0] * (beta[0] - alpha[0])) + (pq[1] * (gamma[0] - alpha[0]));
                 color[1] = alpha[1] + (pq[0] * (beta[1] - alpha[1])) + (pq[1] * (gamma[1] - alpha[1]));
                 color[2] = alpha[2] + (pq[0] * (beta[2] - alpha[2])) + (pq[1] * (gamma[2] - alpha[2]));
-
-				printf("x:%d, y:%d\n", x, y);
-				printf("xa[0]:%f, xa[1]:%f\n", xa[0], xa[1]);
-				printf("color[0]:%f, color[1]:%f, color[2]:%f\n", color[0], color[1], color[2]);
 
                 pixSetRGB(x, y, color[0], color[1], color[2]);
             }
@@ -112,14 +106,12 @@ void render(double a0, double a1, double b0, double b1, double c0, double c1, do
             printf("y: %d\n", y);
             x1 = x1 + (1/findSlope(a, c));
             x2 = x2 + (1/findSlope(b, c));
-            printf("\tx1: %f, x2: %f\n", x1, x2);
             for (int x = x1; x < x2; x++) {
                 double m[2][2] = {
                     {globalB0 - globalA0, globalC0 - globalA0},
                     {globalB1 - globalA1, globalC1 - globalA1}};
                 double mInv[2][2];
                 double xa[2] = {x - globalA0, y - globalA1};
-                printf("%f, %f\n", xa[0], xa[1]);
                 double pq[2];
                 if (mat22Invert(m, mInv) != 0) {
                     mat221Multiply(mInv, xa, pq);
@@ -127,23 +119,10 @@ void render(double a0, double a1, double b0, double b1, double c0, double c1, do
                     printf("DETERMINANT WAS 0. INVERSE MATRIX DOES NOT EXIST!");
                 }
 
-				/*
-				printf("alpha[0]:%f, alpha[1]:%f, alpha[2]:%f||beta[0]:%f, beta[1]:%f,
-				 		beta[2]:%f||gamma[0]:%f, gamma[1]:%f, gamma[2]:%f\n", alpha[0],
-						alpha[1], alpha[2], beta[0], beta[1], beta[2], gamma[0], gamma[1], gamma[2]);
-				*/
-
-				printf("pq[0]:%f, pq[1]:%f\n", pq[0], pq[1]);
-
                 double color[3];
                 color[0] = alpha[0] + (pq[0] * (beta[0] - alpha[0])) + (pq[1] * (gamma[0] - alpha[0]));
                 color[1] = alpha[1] + (pq[0] * (beta[1] - alpha[1])) + (pq[1] * (gamma[1] - alpha[1]));
                 color[2] = alpha[2] + (pq[0] * (beta[2] - alpha[2])) + (pq[1] * (gamma[2] - alpha[2]));
-
-				printf("x:%d, y:%d\n", x, y);
-				printf("xa[0]:%f, xa[1]:%f\n", xa[0], xa[1]);
-				printf("color[0]:%f, color[1]:%f, color[2]:%f\n", color[0], color[1], color[2]);
-				printf("------\n");
 
                 pixSetRGB(x, y, color[0], color[1], color[2]);
             }

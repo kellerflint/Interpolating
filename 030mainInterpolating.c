@@ -12,11 +12,11 @@ int main() {
 		return 1;
 	else {
 
-        double m = 10;
+        double m = 1;
 
-        double a[2] = {0 * m, 0 * m};
-        double b[2] = {30 * m, 0 * m};
-        double c[2] = {3 * m, 6 * m};
+        double a[2] = {60 * m, 60 * m};
+        double b[2] = {(512 - 120) * m, 120 * m};
+        double c[2] = {(512 - 60) * m, (512 - 60) * m};
 
         double rgb[3] = {0, 0, 0};
 
