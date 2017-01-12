@@ -2,37 +2,11 @@
 
 
 #include <stdio.h>
-#include "000pixel.h"
 #include <math.h>
 
 
 //Global variables for now because interpolation MESSED UP MY COOL SOLUTION
 double globalA0, globalA1, globalB0, globalB1, globalC0, globalC1;
-
-
-/* START OF 030matrix.c COPY*/
-
-double mat22Invert(double m[2][2], double mInv[2][2]) {
-	double determinant = (m[0][0] * m[1][1]) - (m[1][0] * m[0][1]);
-
-	if (determinant != 0) {
-		mInv[0][0] = m[1][1] * determinant;
-		mInv[1][1] = m[0][0] * determinant;
-		mInv[0][1] = (-1 * m[0][1]) * determinant;
-		mInv[1][0] = (-1 * m[1][0]) * determinant;
-	}
-
-	return determinant;
-}
-
-/* Multiplies a 2x2 matrix m by a 2-column v, storing the result in mTimesV.
-The output should not */
-void mat221Multiply(double m[2][2], double v[2], double mTimesV[2]) {
-	mTimesV[0] = m[0][0] * v[0] + m[0][1] * v[1];
-	mTimesV[1] = m[1][0] * v[0] + m[1][1] * v[1];
-}
-
-/* END OF 030matrix.c COPY*/
 
 /* Returns the highest value of three doubles */
 double findHigh(double x, double y, double z) {
@@ -126,6 +100,10 @@ void render(double a0, double a1, double b0, double b1, double c0, double c1, do
                 color[1] = alpha[1] + (pq[0] * (beta[1] - alpha[1])) + (pq[1] * (gamma[1] - alpha[1]));
                 color[2] = alpha[2] + (pq[0] * (beta[2] - alpha[2])) + (pq[1] * (gamma[2] - alpha[2]));
 
+				printf("x:%d, y:%d\n", x, y);
+				printf("xa[0]:%f, xa[1]:%f\n", xa[0], xa[1]);
+				printf("color[0]:%f, color[1]:%f, color[2]:%f\n", color[0], color[1], color[2]);
+
                 pixSetRGB(x, y, color[0], color[1], color[2]);
             }
         }
@@ -149,10 +127,23 @@ void render(double a0, double a1, double b0, double b1, double c0, double c1, do
                     printf("DETERMINANT WAS 0. INVERSE MATRIX DOES NOT EXIST!");
                 }
 
+				/*
+				printf("alpha[0]:%f, alpha[1]:%f, alpha[2]:%f||beta[0]:%f, beta[1]:%f,
+				 		beta[2]:%f||gamma[0]:%f, gamma[1]:%f, gamma[2]:%f\n", alpha[0],
+						alpha[1], alpha[2], beta[0], beta[1], beta[2], gamma[0], gamma[1], gamma[2]);
+				*/
+
+				printf("pq[0]:%f, pq[1]:%f\n", pq[0], pq[1]);
+
                 double color[3];
                 color[0] = alpha[0] + (pq[0] * (beta[0] - alpha[0])) + (pq[1] * (gamma[0] - alpha[0]));
                 color[1] = alpha[1] + (pq[0] * (beta[1] - alpha[1])) + (pq[1] * (gamma[1] - alpha[1]));
                 color[2] = alpha[2] + (pq[0] * (beta[2] - alpha[2])) + (pq[1] * (gamma[2] - alpha[2]));
+
+				printf("x:%d, y:%d\n", x, y);
+				printf("xa[0]:%f, xa[1]:%f\n", xa[0], xa[1]);
+				printf("color[0]:%f, color[1]:%f, color[2]:%f\n", color[0], color[1], color[2]);
+				printf("------\n");
 
                 pixSetRGB(x, y, color[0], color[1], color[2]);
             }
@@ -164,17 +155,13 @@ void triRender(double a[2], double b[2], double c[2], double rgb[3],
         double alpha[3], double beta[3], double gamma[3]) {
 
 
-    // Assign global variables for a, b and c
-    globalA0 = a[0];
-    globalA1 = a[1];
-    globalB0 = b[0];
-    globalB1 = b[1];
-    globalC0 = c[0];
-    globalC1 = c[1];
-
     double aa[2] = {a[0], a[1]};
     double bb[2] = {b[0], b[1]};
     double cc[2] = {c[0], c[1]};
+
+	double alpha2[3] = {alpha[0], alpha[1], alpha[2]};
+	double beta2[3] = {beta[0], beta[1], beta[2]};
+	double gamma2[3] = {gamma[0], gamma[1], gamma[2]};
 
     if (findMiddle(aa[1], bb[1], cc[1]) == -1) {
         if (aa[1] == findLow(aa[1], bb[1], cc[1]) && cc[1] == findLow(aa[1], bb[1], cc[1])) {
@@ -182,47 +169,79 @@ void triRender(double a[2], double b[2], double c[2], double rgb[3],
             b[1] = cc[1];
             c[0] = bb[0];
             c[1] = bb[1];
+
+			beta = gamma2;
+			gamma = beta;
         } else if (bb[1] == findLow(aa[1], bb[1], cc[1]) && cc[1] == findLow(aa[1], bb[1], cc[1])) {
             a[0] = cc[0];
             a[1] = cc[1];
             c[0] = aa[0];
             c[1] = aa[1];
+
+			alpha = gamma2;
+			gamma = alpha2;
         } else if (aa[1] == findHigh(aa[1], bb[1], cc[1]) && cc[1] == findHigh(aa[1], bb[1], cc[1])) {
             b[0] = cc[0];
             b[1] = cc[1];
             c[0] = bb[0];
             c[1] = bb[1];
+
+			beta = gamma2;
+			gamma = beta2;
         } else if (bb[1] == findHigh(aa[1], bb[1], cc[1]) && cc[1] == findHigh(aa[1], bb[1], cc[1])) {
             a[0] = cc[0];
             a[1] = cc[1];
             c[0] = aa[0];
             c[1] = aa[1];
+
+			alpha = gamma2;
+			gamma = alpha2;
         }
     } else {
         if (aa[1] == findLow(aa[1], bb[1], cc[1])) {
             b[0] = aa[0];
             b[1] = aa[1];
+
+			beta = alpha2;
         } else if (cc[1] == findLow(aa[1], bb[1], cc[1])) {
             b[0] = cc[0];
             b[1] = cc[1];
+
+			beta = gamma2;
         }
 
         if (bb[1] == findMiddle(aa[1], bb[1], cc[1])) {
             a[0] = bb[0];
             a[1] = bb[1];
+
+			alpha = beta2;
         } else if (cc[1] == findMiddle(aa[1], bb[1], cc[1])) {
             a[0] = cc[0];
             a[1] = cc[1];
+
+			alpha = gamma2;
         }
 
         if (aa[1] == findHigh(aa[1], bb[1], cc[1])) {
             c[0] = aa[0];
             c[1] = aa[1];
+
+			gamma = alpha2;
         } else if (bb[1] == findHigh(aa[1], bb[1], cc[1])) {
             c[0] = bb[0];
             c[1] = bb[1];
+
+			gamma = beta2;
         }
     }
+
+	// Assign global variables for a, b and c
+	globalA0 = a[0];
+	globalA1 = a[1];
+	globalB0 = b[0];
+	globalB1 = b[1];
+	globalC0 = c[0];
+	globalC1 = c[1];
 
     printf("(%f,%f):(%f,%f):(%f,%f)\n", a[0], a[1], b[0], b[1], c[0], c[1]);
 

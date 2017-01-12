@@ -2,8 +2,9 @@
 
 #include <stdio.h>
 #include "000pixel.h"
+#include "030matrix.c"
 #include "030triangle.c"
-//#include "030matrix.c"
+
 
 int main() {
     // Initializes Pixel Graphics
@@ -14,7 +15,7 @@ int main() {
         double m = 10;
 
         double a[2] = {0 * m, 0 * m};
-        double b[2] = {6 * m, 0 * m};
+        double b[2] = {30 * m, 0 * m};
         double c[2] = {3 * m, 6 * m};
 
         double rgb[3] = {0, 0, 0};

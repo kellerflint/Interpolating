@@ -16,10 +16,10 @@ double mat22Invert(double m[2][2], double mInv[2][2]) {
 	double determinant = (m[0][0] * m[1][1]) - (m[1][0] * m[0][1]);
 
 	if (determinant != 0) {
-		mInv[0][0] = m[1][1] * determinant;
-		mInv[1][1] = m[0][0] * determinant;
-		mInv[0][1] = (-1 * m[0][1]) * determinant;
-		mInv[1][0] = (-1 * m[1][0]) * determinant;
+		mInv[0][0] = m[1][1] / determinant;
+		mInv[1][1] = m[0][0] / determinant;
+		mInv[0][1] = (-1 * m[0][1]) / determinant;
+		mInv[1][0] = (-1 * m[1][0]) / determinant;
 	}
 
 	return determinant;
@@ -28,8 +28,8 @@ double mat22Invert(double m[2][2], double mInv[2][2]) {
 /* Multiplies a 2x2 matrix m by a 2-column v, storing the result in mTimesV.
 The output should not */
 void mat221Multiply(double m[2][2], double v[2], double mTimesV[2]) {
-	mTimesV[0] = m[0][0] * v[0] + m[0][1] * v[1];
-	mTimesV[1] = m[1][0] * v[0] + m[1][1] * v[1];
+	mTimesV[0] = (m[0][0] * v[0]) + (m[0][1] * v[1]);
+	mTimesV[1] = (m[1][0] * v[0]) + (m[1][1] * v[1]);
 }
 
 /* Fills the matrix m from its two columns. */
